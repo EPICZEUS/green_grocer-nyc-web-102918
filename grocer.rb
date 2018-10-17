@@ -21,11 +21,15 @@ def apply_coupons(cart, coupons)
   coupons.each do |coupon|
     if cart.has_key?(coupon[:item])
       cart[coupon[:item]][:count] -= coupon[:num]
-      cart[coupon[:item] + " W/COUPON"] = {
-        price: coupon[:cost],
-        clearance: cart[coupon[:item]][:clearance],
-        count: 1
-      }
+      if !cart.has_key?(coupon[:item] + " W/COUPON")
+        cart[coupon[:item] + " W/COUPON"] = {
+          price: coupon[:cost],
+          clearance: cart[coupon[:item]][:clearance],
+          count: 1
+        }
+      else
+        cart[coupon[:item] + " W/COUPON"][:count] += 1
+      end
     end
   end
   
